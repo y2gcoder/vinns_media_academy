@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- <property name="jdbcUrl" 
+		value="jdbc:mysql://localhost/sb9593?useSSL=false&amp;serverTimezone=Asia/Seoul"/>
+		<property name="username" value="sb9593"/>
+		<property name="password" value="staybusan9593!"/> -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="jdbcUrl" 
+		value="jdbc:mysql://210.122.7.52:3306/test?useSSL=false&amp;serverTimezone=Asia/Seoul"/>
+		<property name="username" value="test"/>
+		<property name="password" value="tlfrl2019ckadu"/>
+		<property name="maximumPoolSize" value="200"/>
+		<property name="minimumIdle" value="20"/>
+		<property name="connectionTimeout" value="30000"/>
+		<property name="idleTimeout" value="200000" />
+	</bean>
+	
+	<bean id="ds" class="com.zaxxer.hikari.HikariDataSource">
+		<constructor-arg ref="hikariConfig"/>
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds"/>
+	</bean>	
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory"/>
+	</bean>
+	
+	<mybatis-spring:scan base-package="com.vinnsmedia.academy.dao"/>
+	
+	
+	<task:annotation-driven/>
+	
+	<tx:annotation-driven/>
+	
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+		
+</beans>

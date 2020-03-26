@@ -1,6 +1,7 @@
 package com.vinnsmedia.academy.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.vinnsmedia.academy.vo.AliceNParkerVO;
 import com.vinnsmedia.academy.vo.AvgScoreVO;
@@ -15,6 +16,6 @@ public interface HomeService {
 	List<AliceNParkerVO> getANPScores()throws Exception;
 
 	// 학년별 학생 목록 불러오기
-	List<StudentListVO> getStudentList(Integer i)throws Exception;
+	Map<String, Object> getStudentList(Integer level, Integer page) throws Exception;
 
 }

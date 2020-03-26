@@ -72,15 +72,16 @@ public class HomeController {
 	}
 	
 	// 리스트 불러오기
-	@GetMapping("/{level}")
+	@GetMapping("/{level}/{page}")
 	@ResponseBody
-	public ResponseEntity<List<StudentListVO>> studentList(@PathVariable("level") Integer level) throws Exception {
-		ResponseEntity<List<StudentListVO>> entity = null;
+	public ResponseEntity<Map<String, Object>> studentList(@PathVariable("level") Integer level, 
+			@PathVariable("page") Integer page) throws Exception {
+		ResponseEntity<Map<String, Object>> entity = null;
 		
 		try {
-			List<StudentListVO> studentList = homeService.getStudentList(level);
+			Map<String, Object> map = homeService.getStudentList(level, page);
 			
-			entity = new ResponseEntity<>(studentList, HttpStatus.OK);
+			entity = new ResponseEntity<>(map, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);

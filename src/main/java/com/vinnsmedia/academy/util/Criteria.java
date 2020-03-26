@@ -7,7 +7,7 @@ public class Criteria {
 	private int perPageNum; // 한 페이지에 보여줄 게시글의 개수
 	
 	public Criteria() {
-		this(1,10);
+		this(1,6);
 	}
 	
 	public Criteria(int page, int perPageNum) {

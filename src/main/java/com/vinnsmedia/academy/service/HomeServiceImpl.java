@@ -1,12 +1,16 @@
 package com.vinnsmedia.academy.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
 import com.vinnsmedia.academy.dao.HomeDAO;
+import com.vinnsmedia.academy.util.Criteria;
+import com.vinnsmedia.academy.util.PageMaker;
 import com.vinnsmedia.academy.vo.ANPScoreDTO;
 import com.vinnsmedia.academy.vo.AliceNParkerVO;
 import com.vinnsmedia.academy.vo.AvgScoreVO;
@@ -40,9 +44,18 @@ public class HomeServiceImpl implements HomeService{
 	}
 
 	@Override
-	public List<StudentListVO> getStudentList(Integer i) throws Exception {
+	public Map<String, Object> getStudentList(Integer level, Integer page) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		
+		Criteria cri = new Criteria();
+		cri.setPage(page);
+		cri.setPerPageNum(3);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(homeDAO.totalStudent(level));
+		
 		// 인자로 받은 학년 전체 리스트 불러오기
-		List<StudentListVO> list = homeDAO.createStudentList(i);
+		List<StudentListVO> list = homeDAO.createStudentList(level, cri);
 		
 		// 만들어진 리스트에 점수들 넣기
 		for(StudentListVO vo : list) {
@@ -58,8 +71,17 @@ public class HomeServiceImpl implements HomeService{
 			vo.setScores(scores);
 		}
 		
-		return list;
+		if(list != null && list.size() > 0) {
+			map.put("students", list);
+			map.put("pageMaker", pageMaker);
+		}
+		
+		return map;
 	}
+	
+	
+	
+
 	
 	
 	

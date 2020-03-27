@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vinnsmedia.academy.dao.HomeDAO;
 import com.vinnsmedia.academy.util.Criteria;
@@ -27,7 +28,7 @@ public class HomeServiceImpl implements HomeService{
 				
 		return homeDAO.getAvgScores();
 	}
-
+	
 	@Override
 	public List<AliceNParkerVO> getANPScores() throws Exception {
 		// 먼저 Alice와 Parker 리스트 형성
@@ -42,7 +43,7 @@ public class HomeServiceImpl implements HomeService{
 		
 		return list;
 	}
-
+	
 	@Override
 	public Map<String, Object> getStudentList(Integer level, Integer page) throws Exception {
 		Map<String, Object> map = new HashMap<>();

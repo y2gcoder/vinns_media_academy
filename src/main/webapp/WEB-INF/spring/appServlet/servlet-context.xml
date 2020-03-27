@@ -25,15 +25,17 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.vinnsmedia.academy.controller, com.vinnsmedia.academy.service" />
+	
 	
 	<aop:aspectj-autoproxy/>
 	
 	<beans:bean id="transactionManager" 
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<beans:property name="dataSource" ref="ds"/>	
+		<beans:property name="dataSource" ref="dataSource"/>	
 	</beans:bean>
 	
 	<tx:annotation-driven/>
+	
+	<context:component-scan base-package="com.vinnsmedia.academy.controller, com.vinnsmedia.academy.service" />
 	
 </beans:beans>

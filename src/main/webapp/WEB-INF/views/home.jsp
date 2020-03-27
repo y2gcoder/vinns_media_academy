@@ -159,14 +159,13 @@
 	var defaultLevel = 10;
 	var defaultPage = 1;
 	
-	
-	
 	paintingChart();
 	paintingList(defaultLevel, defaultPage);
 	// 화면 사이즈 변경 시 막대 그래프 너비가 늘어나서 이쁘지 않아 update하기로 함.
-
 	$(window).resize(function(){
-		window.theChart.update();
+		/* myChart.update(); */
+		/* paintingChart(); */
+		location.reload();
 	}); 
 	
 	// 차트 그리기

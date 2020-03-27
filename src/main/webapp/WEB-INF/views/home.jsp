@@ -351,7 +351,26 @@
 				html += "	<td>";
 				html += this.track;
 				html += "	</td>";
-				if(this.scores.length == 1){
+				if(this.scores == null || this.scores.length == 0) {
+					html += "	<td>";
+					html += " -- ";
+					html += "	</td>";
+					html += "	<td>";
+					html += " -- ";
+					html += "	</td>";
+					html += "	<td>";
+					html += " -- ";
+					html += "	</td>";
+					html += "	<td>";
+					html += " -- ";
+					html += "	</td>";
+					html += "	<td>";
+					html += " -- ";
+					html += "	</td>";
+					html += "	<td>";
+					html += " -- ";
+					html += "	</td>";
+				}else if(this.scores.length == 1){
 					html += "	<td>";
 					html += this.scores[0].title;
 					html += "	</td>";

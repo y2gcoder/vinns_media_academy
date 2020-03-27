@@ -169,19 +169,35 @@
 			url: "/chart",
 			dataType: "json"
 		}).done(function(result){
-			console.log(result.ANP);
 			// result.totalAvgList = 학년 별, 트랙 별 평균 점수
 			// result.ANP = Alice & Parker의 학년별 track 1 점수
 			var ctx = document.getElementById('avgChart');
 			
-			var avgChart = new Chart(ctx, {
+			window.theChart = new Chart(ctx, {
 				type: 'bar',
 				data: {
 					labels: ['4', '3', '2', '1', 
 						'4', '3', '2', '1',
 						'4', '3', '2', '1'],
 					datasets: [{
+						label: 'Alice',
+						data: [NaN, NaN, NaN, result.ANP[0].scores[0].value, NaN, NaN, NaN, result.ANP[0].scores[1].value, NaN, NaN, NaN, result.ANP[0].scores[2].value],
+						backgroundColor: 'rgba(153, 102, 255, 0.8)',
+						borderColor: 'rgba(153, 102, 255, 1)',
+						fill: false,
+						type: 'line',
+						spanGaps: true,
+					}, {
+						label: 'Parker',
+						data: [NaN, NaN, NaN, result.ANP[1].scores[0].value, NaN, NaN, NaN, result.ANP[1].scores[1].value, NaN, NaN, NaN, result.ANP[1].scores[2].value],
+						backgroundColor: 'rgba(255, 159, 64, 0.8)',
+						borderColor: 'rgba(255, 159, 64, 1)',
+						fill: false,
+						type: 'line',
+						spanGaps: true,
+					}, {
 						label: 'track',
+						type: 'bar',
 						data: [result.totalAvgList[0].avg, 
 							result.totalAvgList[1].avg, 
 							result.totalAvgList[2].avg, 
@@ -224,26 +240,7 @@
 							'rgba(75, 192, 192, 1)',
 						],
 						borderWidth: 1,
-						maxBarThickness: 55,
-						order: 3
-					}, {
-						label: 'Alice',
-						data: [NaN, NaN, NaN, result.ANP[0].scores[0].value, NaN, NaN, NaN, result.ANP[0].scores[1].value, NaN, NaN, NaN, result.ANP[0].scores[2].value],
-						backgroundColor: 'rgba(153, 102, 255, 0.8)',
-						borderColor: 'rgba(153, 102, 255, 1)',
-						fill: false,
-						type: 'line',
-						spanGaps: true,
-						order: 1
-					}, {
-						label: 'Parker',
-						data: [NaN, NaN, NaN, result.ANP[1].scores[0].value, NaN, NaN, NaN, result.ANP[1].scores[1].value, NaN, NaN, NaN, result.ANP[1].scores[2].value],
-						backgroundColor: 'rgba(255, 159, 64, 0.8)',
-						borderColor: 'rgba(255, 159, 64, 1)',
-						fill: false,
-						type: 'line',
-						spanGaps: true,
-						order: 2
+						maxBarThickness: 50,
 					}]
 				},
 				options: {
@@ -261,7 +258,7 @@
 					},
 				}
 			});
-			$("#chartLegend").html(avgChart.generateLegend());
+			$("#chartLegend").html(window.theChart.generateLegend());
 			
 			// 커스텀 범례
 			function drawCustomLegend(chart){
@@ -270,6 +267,7 @@
 				if(chart.config.type == 'bar'){
 					var barIndex = chart.data.datasets.length;
 					for(var i=0; i<chart.data.datasets.length;i++){
+						
 						if(chart.data.datasets[i].type == 'line' == false){
 							barIndex = i;
 							break;
@@ -278,7 +276,7 @@
 					
 					for (i=barIndex; i<chart.data.datasets.length; i++) {
 						if(!(chart.data.datasets[i].hideLegend) && chart.data.datasets[i].label){
-								text.push('<li datasetIndex="'+i+'"><span class="bar" style="background-color: '+chart.data.datasets[i].backgroundColor+'"></span>');
+								text.push('<li datasetIndex="'+i+'"><span class="bar" style="background-color: '+chart.data.datasets[i].backgroundColor[0]+'"></span>');
 								text.push('<span>'+chart.data.datasets[i].label+'</span>');
 								text.push('</li>');
 						}
@@ -302,104 +300,26 @@
 				text.push('</ul>');
 				return text.join("");
 			}
-			/* var avgChart = new Chart(ctx, {
-				type: 'bar',
-				data: {
-					labels: ['10학년', '11학년', '12학년'],
-					datasets: [{
-						label: 'track 4',
-						data: [result.totalAvgList[0].avg, result.totalAvgList[4].avg, result.totalAvgList[8].avg],
-						backgroundColor: [
-							'rgba(255, 99, 132, 0.8)',
-							'rgba(255, 99, 132, 0.8)',
-							'rgba(255, 99, 132, 0.8)'
-						],
-						borderColor: [
-							'rgba(255, 99, 132, 1)',
-							'rgba(255, 99, 132, 1)',
-							'rgba(255, 99, 132, 1)'
-						],
-						borderWidth: 1,
-						maxBarThickness: 55,
-						order: 3
-					},{
-						label: 'track 3',
-						data: [result.totalAvgList[1].avg, result.totalAvgList[5].avg, result.totalAvgList[9].avg],
-						backgroundColor: [
-							'rgba(54, 162, 235, 0.8)',
-							'rgba(54, 162, 235, 0.8)',
-							'rgba(54, 162, 235, 0.8)'
-						],
-						borderColor: [
-							'rgba(54, 162, 235, 1)',
-							'rgba(54, 162, 235, 1)',
-							'rgba(54, 162, 235, 1)'
-						],
-						borderWidth: 1,
-						maxBarThickness: 55,
-						order: 4
-					}, {
-						label: 'track 2',
-						data: [result.totalAvgList[2].avg, result.totalAvgList[6].avg, result.totalAvgList[10].avg],
-						backgroundColor: [
-							'rgba(255, 206, 86, 0.8)',
-							'rgba(255, 206, 86, 0.8)',
-							'rgba(255, 206, 86, 0.8)'
-						],
-						borderColor: [
-							'rgba(255, 206, 86, 1)',
-							'rgba(255, 206, 86, 1)',
-							'rgba(255, 206, 86, 1)',
-						],
-						borderWidth: 1,
-						maxBarThickness: 55,
-						order: 5
-					},{
-						label: 'track 1',
-						data: [result.totalAvgList[3].avg, result.totalAvgList[7].avg, result.totalAvgList[11].avg],
-						backgroundColor: [
-							'rgba(75, 192, 192, 0.8)',
-							'rgba(75, 192, 192, 0.8)',
-							'rgba(75, 192, 192, 0.8)',
-						],
-						borderColor: [
-							'rgba(75, 192, 192, 1)',
-							'rgba(75, 192, 192, 1)',
-							'rgba(75, 192, 192, 1)'
-						],
-						borderWidth: 1,
-						maxBarThickness: 55,
-						order: 6
-					},{
-						label: 'Alice',
-						data: [result.ANP[0].scores[0].value, result.ANP[0].scores[1].value, result.ANP[0].scores[2].value],
-						backgroundColor: 'rgba(153, 102, 255, 0.8)',
-						borderColor: 'rgba(153, 102, 255, 1)',
-						fill: false,
-						type: 'line',
-						order: 1
-					},{
-						label: 'Parker',
-						data: [result.ANP[1].scores[0].value, result.ANP[1].scores[1].value, result.ANP[1].scores[2].value],
-						backgroundColor: 'rgba(255, 159, 64, 0.8)',
-						borderColor: 'rgba(255, 159, 64, 1)',
-						fill: false,
-						type: 'line',
-						order: 2
-					}],
-				},
-				options: {
-					responsive: false,
-					scales: {
-						yAxes: [{
-							ticks: {
-								beginAtZero: true
-								
-							}
-						}]
-					},
-				} 
-			}); */ 
+			// 기존 범례 기능 추가
+			$("#chartLegend li").click(function(){
+				updateDataset(event, $(this).attr("datasetIndex"), "theChart");
+				if($(this).css("text-decoration").indexOf("line-through")<0){
+					$(this).css("text-decoration", "line-through");
+				}else {
+					$(this).css("text-decoration", "none");
+				}
+			});
+			
+			// update 함수
+			function updateDataset(e, datasetIndex, chartId){
+				var index = datasetIndex;
+				var ci = e.view[chartId];
+				var meta = ci.getDatasetMeta(index);
+				var scaleList = ci.options.scales["yAxes"];
+				
+				meta.hidden = meta.hidden === null? !ci.data.datasets[index].hidden : null;
+				ci.update();
+			}
 		}).fail(function(xhr, status, errorThrown){
 			console.log(errorThrown+" / "+status);
 		});
@@ -411,7 +331,6 @@
 			url: "/"+level+"/"+page,
 			dataType: "json"
 		}).done(function(data){
-			console.log(data);
 			// data.students = 학년 별 학생 리스트
 			// data.pageMaker = 페이징 처리
 			var html = "";

@@ -163,12 +163,11 @@
 	
 	paintingChart();
 	paintingList(defaultLevel, defaultPage);
-	// 화면 사이즈 변경 시 막대 그래프 너비가 늘어나서 이쁘지 않아 다시 불러오기로 함.
-	// 차트를 다시 그릴 경우 범례는 그대로임. 
-	// 새로고침을 할 경우 밑의 학생목록이 초기화가 됨.
-	/* $(window).resize(function(){
-		
-	}); */
+	// 화면 사이즈 변경 시 막대 그래프 너비가 늘어나서 이쁘지 않아 update하기로 함.
+
+	$(window).resize(function(){
+		window.theChart.update();
+	}); 
 	
 	// 차트 그리기
 	function paintingChart() {

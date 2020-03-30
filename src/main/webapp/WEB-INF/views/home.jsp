@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -177,8 +177,23 @@
 		}).done(function(result){
 			// result.totalAvgList = 학년 별, 트랙 별 평균 점수
 			// result.ANP = Alice & Parker의 학년별 track 1 점수
-			var ctx = document.getElementById('avgChart');
 			
+			Chart.pluginService.register({
+				beforeDraw: function (chart, easing) {
+					if(chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
+						var ctx = chart.chart.ctx;
+						var chartArea = chart.chartArea;
+						
+						ctx.save();
+						ctx.fillStyle = chart.config.options.chartArea.backgroundColor;
+						ctx.fillRect(chartArea.left, chartArea.top, (chartArea.right-chartArea.left)/3, chartArea.bottom - chartArea.top);
+						ctx.fillRect(chartArea.left+(chartArea.right-chartArea.left)*2/3, chartArea.top, (chartArea.right-chartArea.left)*1/3, chartArea.bottom - chartArea.top);
+						ctx.restore();
+					}
+				}
+			});
+			
+			var ctx = document.getElementById('avgChart').getContext("2d");
 			window.theChart = new Chart(ctx, {
 				type: 'bar',
 				data: {
@@ -255,6 +270,9 @@
 						return drawCustomLegend(chart);
 					},
 					responsive: false,
+					chartArea: {
+						backgroundColor: 'rgba(168, 168, 168, 1)'
+					},
 					scales: {
 						yAxes: [{
 							ticks: {

@@ -278,6 +278,11 @@
 							ticks: {
 								beginAtZero: true
 							}
+						}],
+						xAxes: [{
+							gridLines: {
+								lineWidth: 0
+							}
 						}]
 					},
 				}
